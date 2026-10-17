@@ -28,6 +28,12 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<tomcat.version>11.0.27</tomcat.version>
+		<jackson2.version>2.21.7</jackson2.version>
+		<jackson3.version>3.1.7</jackson3.version>
+		<asm.version>9.11</asm.version>
+		<logback.version>1.6.5</logback.version>
+		<jackson.version>2.21.7</jackson.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -38,6 +44,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-restclient</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -98,7 +105,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc-test</artifactId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-webmvc-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -144,10 +156,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
