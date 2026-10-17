@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: employee-hub
+  profiles:
+    default: dev
+  datasource:
+    url: jdbc:sqlite:./data/myAcmeEmployee.sqlite
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: validate
+
+employees:
+  pagination:
+    default-page-number: 0
+    default-page-size: 30
+  salary:
+    high-salary-threshold: 1000000
+  defaults:
+    currency: USD

@@ -1,0 +1,9 @@
+spring:
+  jpa:
+    show-sql: true
+
+employees:
+  pagination:
+    default-page-size: 90
+  defaults:
+    currency: INR
