@@ -10,6 +10,10 @@ spring:
     database-platform: org.hibernate.community.dialect.SQLiteDialect
     hibernate:
       ddl-auto: validate
+server:
+  port: 9090
+  servlet:
+    context-path: /
 
 employees:
   pagination:
