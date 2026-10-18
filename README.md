@@ -191,7 +191,67 @@ GET /api/employees/country/USA
 
 This performs a case-insensitive match on the employee `location` field.
 
-### 4) Get department counts by location and salary threshold
+### 4) Get highest paid employees by location and department
+
+```http
+GET /api/employees/highest-paid
+```
+
+Returns the highest-paid employee for each `(location, department)` group, ordered by salary descending.
+
+Example response:
+
+```json
+[
+  {
+    "empId": "EMP_02",
+    "name": "Bob",
+    "email": "bob@acme.com",
+    "department": "Engineering",
+    "salary": 950000,
+    "currency": "USD",
+    "location": "USA"
+  },
+  {
+    "empId": "EMP_04",
+    "name": "Dan",
+    "email": "dan@acme.com",
+    "department": "Sales",
+    "salary": 880000,
+    "currency": "USD",
+    "location": "USA"
+  }
+]
+```
+
+### 5) Get employee count by country
+
+```http
+GET /api/employees/country-counts
+```
+
+Returns the total employee count grouped by country/location.
+
+Example response:
+
+```json
+[
+  {
+    "location": "Canada",
+    "employeeCount": 1
+  },
+  {
+    "location": "India",
+    "employeeCount": 2
+  },
+  {
+    "location": "USA",
+    "employeeCount": 4
+  }
+]
+```
+
+### 6) Get department counts by location and salary threshold
 
 ```http
 GET /api/employees/department-counts?location=USA&salaryThreshold=500000
