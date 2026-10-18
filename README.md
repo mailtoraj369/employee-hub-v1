@@ -53,16 +53,63 @@ Run just the BDD suite with:
 ./mvnw test -Dtest=EmployeeCucumberTest
 ```
 
+## Docker
+
+Before building the Docker image, create the packaged application artifact first:
+
+```bash
+./mvnw clean install
+```
+
+Then build the image:
+
+```bash
+docker build -t employee-hub .
+```
+
+Run the container with the default profile and the app port mapped to `9090`:
+
+```bash
+docker run --rm -p 9090:9090 -e SPRING_PROFILES_ACTIVE=dev employee-hub
+```
+
+Override the profile and port when needed:
+
+```bash
+docker run --rm -p 8081:8081 -e SPRING_PROFILES_ACTIVE=prod -e SERVER_PORT=8081 employee-hub
+```
+
+Notes:
+- The app default profile is `dev`.
+- The default app port is `9090`.
+- `SPRING_PROFILES_ACTIVE` and `SERVER_PORT` can be overridden at runtime.
+- The container image exposes port `9090` by default, but you can map it to any host port with `-p HOST_PORT:CONTAINER_PORT`.
+
 ## Run locally
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-The app will start on:
+By default, the app loads the `dev` profile and starts on port `9090`.
+
+You can override the profile and port at runtime:
+
+```bash
+SPRING_PROFILES_ACTIVE=prod ./mvnw spring-boot:run
+SPRING_PROFILES_ACTIVE=dev SERVER_PORT=8081 ./mvnw spring-boot:run
+```
+
+The default local URL is:
 
 ```text
-http://localhost:8080
+http://localhost:9090
+```
+
+If you override the server port, use the custom value instead, for example:
+
+```text
+http://localhost:8081
 ```
 
 ## Swagger / OpenAPI URLs
