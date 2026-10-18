@@ -1,6 +1,7 @@
 package com.acme.employeehub.controller;
 
 import com.acme.employeehub.config.EmployeeProperties;
+import com.acme.employeehub.dto.CountryEmployeeCountDto;
 import com.acme.employeehub.dto.DepartmentLocationCountDto;
 import com.acme.employeehub.dto.EmployeeDto;
 import com.acme.employeehub.exception.GlobalExceptionHandler;
@@ -116,6 +117,47 @@ class EmployeeControllerMvcTest {
                 .andExpect(jsonPath("$[0].currency").value("INR"));
 
         verify(employeeService).getEmployeesByCountry("India");
+    }
+
+    @Test
+    void getHighestPaidEmployeesByLocationAndDepartment_returnsEmployees() throws Exception {
+        EmployeeDto highestPaidEmployee = new EmployeeDto(
+                "EMP-200",
+                "Charlie",
+                "charlie@acme.com",
+                "Engineering",
+                920000,
+                "USD",
+                "USA"
+        );
+
+        when(employeeService.findHighestPaidEmployeesByLocationAndDepartment())
+                .thenReturn(List.of(highestPaidEmployee));
+
+        mockMvc.perform(get("/api/employees/highest-paid"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].empId").value("EMP-200"))
+                .andExpect(jsonPath("$[0].name").value("Charlie"))
+                .andExpect(jsonPath("$[0].location").value("USA"));
+
+        verify(employeeService).findHighestPaidEmployeesByLocationAndDepartment();
+    }
+
+    @Test
+    void getCountryCounts_returnsEmployeeCountsByCountry() throws Exception {
+        CountryEmployeeCountDto usa = new CountryEmployeeCountDto("USA", 3L);
+        CountryEmployeeCountDto india = new CountryEmployeeCountDto("India", 2L);
+
+        when(employeeService.countEmployeesByCountry()).thenReturn(List.of(usa, india));
+
+        mockMvc.perform(get("/api/employees/country-counts"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].location").value("USA"))
+                .andExpect(jsonPath("$[0].employeeCount").value(3))
+                .andExpect(jsonPath("$[1].location").value("India"))
+                .andExpect(jsonPath("$[1].employeeCount").value(2));
+
+        verify(employeeService).countEmployeesByCountry();
     }
 
     @Test

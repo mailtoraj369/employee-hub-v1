@@ -1,6 +1,7 @@
 package com.acme.employeehub.controller;
 
 import com.acme.employeehub.config.EmployeeProperties;
+import com.acme.employeehub.dto.CountryEmployeeCountDto;
 import com.acme.employeehub.dto.DepartmentLocationCountDto;
 import com.acme.employeehub.dto.EmployeeDto;
 import com.acme.employeehub.exception.EmployeeValidationException;
@@ -67,5 +68,15 @@ public class EmployeeController {
         return employeeService.countByDepartmentAndLocation(
                 actualSalaryThreshold, location
         );
+    }
+
+    @GetMapping("/country-counts")
+    public List<CountryEmployeeCountDto> getCountryCounts() {
+        return employeeService.countEmployeesByCountry();
+    }
+
+    @GetMapping("/highest-paid")
+    public List<EmployeeDto> getHighestPaidEmployeesByLocationAndDepartment() {
+        return employeeService.findHighestPaidEmployeesByLocationAndDepartment();
     }
 }

@@ -19,6 +19,40 @@ This project is designed to serve as a lightweight employee directory and report
 - filter employees by country/location
 - summarize department counts for a given location and salary threshold
 
+## BDD / Cucumber preview
+
+The repository includes BDD-style coverage for the core employee reporting flows.
+
+- Feature file: `src/test/resources/features/employee-queries.feature`
+- Step definitions: `src/test/java/com/acme/employeehub/cucumber/EmployeeSteps.java`
+- Test runner: `src/test/java/com/acme/employeehub/cucumber/EmployeeCucumberTest.java`
+
+Example feature preview:
+
+```gherkin
+Feature: Employee queries
+  Scenario: Get all employees
+    Given the employee records are loaded
+    When I request all employees with page number 0 and page size 10
+    Then I should receive 4 employees
+
+  Scenario: Get highest paid employees by location and department
+    Given the employee records are loaded
+    When I request the highest paid employees by location and department
+    Then I should receive the top paid employee for each location and department
+
+  Scenario: Get employee count by country
+    Given the employee records are loaded
+    When I request the employee count by country
+    Then I should receive counts for USA, India, and Canada
+```
+
+Run just the BDD suite with:
+
+```bash
+./mvnw test -Dtest=EmployeeCucumberTest
+```
+
 ## Run locally
 
 ```bash

@@ -1,5 +1,6 @@
 package com.acme.employeehub.repository;
 
+import com.acme.employeehub.entity.CountryEmployeeCount;
 import com.acme.employeehub.entity.DepartmentLocationCount;
 import com.acme.employeehub.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,4 +25,35 @@ public interface EmployeeRepository extends JpaRepository<Employee, String> {
             @Param("salaryThreshold") Integer salaryThreshold,
             @Param("location") String location
     );
+
+    @Query(value = """
+        SELECT location,
+               COUNT(*) AS employeeCount
+        FROM employees
+        GROUP BY location
+        ORDER BY location
+        """, nativeQuery = true)
+    List<CountryEmployeeCount> countEmployeesByCountry();
+
+    @Query(value = """
+    WITH ranked AS (
+        SELECT emp_id,
+               name,
+               email,
+               department,
+               salary,
+               currency,
+               location,
+               DENSE_RANK() OVER (
+                   PARTITION BY location, department
+                   ORDER BY salary DESC
+               ) AS salary_rank
+        FROM employees
+    )
+    SELECT emp_id, name, email, department, salary, currency, location
+    FROM ranked
+    WHERE salary_rank = 1
+    ORDER BY salary DESC, location, department
+    """, nativeQuery = true)
+    List<Employee> findHighestPaidEmployeesByLocationAndDepartment();
 }

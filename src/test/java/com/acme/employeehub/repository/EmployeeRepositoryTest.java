@@ -83,4 +83,41 @@
                             tuple("Sales", "USA", 1L)
                     );
         }
-    }
+
+            @Test
+            void countEmployeesByCountry_returnsCountsPerLocation() {
+                repository.save(new Employee("EMP_01", "Alice", "testAlice@yl.com", "Engineering", 600_000, "USD", "USA"));
+                repository.save(new Employee("EMP_02", "Bob", "testBob@yl.com", "Engineering", 700_000, "INR", "India"));
+                repository.save(new Employee("EMP_03", "Cara", "testCara@yl.com", "Sales", 400_000, "USD", "USA"));
+                repository.save(new Employee("EMP_04", "Dan", "testDan@yl.com", "Finance", 900_000, "CAD", "Canada"));
+
+                List<com.acme.employeehub.entity.CountryEmployeeCount> rows = repository.countEmployeesByCountry();
+
+                assertThat(rows)
+                        .extracting(
+                                com.acme.employeehub.entity.CountryEmployeeCount::getLocation,
+                                com.acme.employeehub.entity.CountryEmployeeCount::getEmployeeCount
+                        )
+                        .containsExactlyInAnyOrder(
+                                tuple("USA", 2L),
+                                tuple("India", 1L),
+                                tuple("Canada", 1L)
+                        );
+            }
+
+            @Test
+            void findHighestPaidEmployeesByLocationAndDepartment_returnsTopEmployeePerGroup() {
+                repository.save(new Employee("EMP_01", "Alice", "alice@yl.com", "Engineering", 600_000, "USD", "USA"));
+                repository.save(new Employee("EMP_02", "Bob", "bob@yl.com", "Engineering", 950_000, "USD", "USA"));
+                repository.save(new Employee("EMP_03", "Cara", "cara@yl.com", "Sales", 700_000, "USD", "USA"));
+                repository.save(new Employee("EMP_04", "Dan", "dan@yl.com", "Sales", 880_000, "USD", "USA"));
+                repository.save(new Employee("EMP_05", "Eve", "eve@yl.com", "Engineering", 820_000, "INR", "India"));
+                repository.save(new Employee("EMP_06", "Frank", "frank@yl.com", "Finance", 750_000, "CAD", "Canada"));
+
+                List<Employee> result = repository.findHighestPaidEmployeesByLocationAndDepartment();
+
+                assertThat(result)
+                        .extracting(Employee::getName)
+                        .containsExactly("Bob", "Dan", "Eve", "Frank");
+            }
+        }
