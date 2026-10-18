@@ -1,12 +1,14 @@
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-COPY target/employee-hub-0.0.1-SNAPSHOT.jar employee-hub.jar
-COPY data/myAcmeEmployee.sqlite ./data/myAcmeEmployee.sqlite
+COPY --chown=10001:10001 target/employee-hub-0.0.1-SNAPSHOT.jar  employee-hub-service.jar
+COPY --chown=10001:10001 data/myAcmeEmployee.sqlite data/myAcmeEmployee.sqlite
 
 ENV SPRING_PROFILES_ACTIVE=dev
 
-EXPOSE 8080
+EXPOSE 9090
 
-ENTRYPOINT ["java", "-jar", "employee-hub.jar"]
+USER 10001:10001
+
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75.0", "-jar", "employee-hub-service.jar"]

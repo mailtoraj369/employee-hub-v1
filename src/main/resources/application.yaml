@@ -15,6 +15,20 @@ server:
   servlet:
     context-path: /
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics"
+  endpoint:
+    health:
+      show-details: when-authorized
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+
 employees:
   pagination:
     default-page-number: 0
