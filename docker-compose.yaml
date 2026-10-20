@@ -1,0 +1,28 @@
+services:
+  employee-hub-ui:
+    image: employee-hub-ui:v1
+    container_name: employee-hub-ui
+    ports:
+      - "8080:8080"
+    environment:
+      "employee.hub.service.base-url": "${EMPLOYEE_HUB_SERVICE_BASE_URL:-http://employee-hub-svc:9090}"
+      SPRING_PROFILES_ACTIVE: "${SPRING_PROFILES_ACTIVE:-prod}"
+    networks:
+      - employee-hub-network
+    depends_on:
+      - employee-hub-svc
+
+  employee-hub-svc:
+    image: employee-hub-svc:v1
+    container_name: employee-hub-svc
+    ports:
+      - "9090:9090"
+    environment:
+      SPRING_PROFILES_ACTIVE: "${SPRING_PROFILES_ACTIVE:-prod}"
+    networks:
+      - employee-hub-network
+
+networks:
+  employee-hub-network:
+    name: employee-hub-network
+    driver: bridge
