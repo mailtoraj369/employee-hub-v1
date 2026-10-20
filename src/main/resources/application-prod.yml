@@ -1,9 +1,5 @@
 spring:
-  datasource:
-    url: jdbc:sqlite:./<PROD_DATABASE_PATH>
-    driver-class-name:  <>
   jpa:
-    database-platform: <PROD_DATABASE>
     hibernate:
       ddl-auto: validate
     show-sql: false

@@ -5,7 +5,7 @@ WORKDIR /app
 COPY --chown=10001:10001 target/employee-hub-0.0.1-SNAPSHOT.jar  employee-hub-service.jar
 COPY --chown=10001:10001 data/myAcmeEmployee.sqlite data/myAcmeEmployee.sqlite
 
-ENV SPRING_PROFILES_ACTIVE=dev
+ENV SPRING_PROFILES_ACTIVE=prod
 
 EXPOSE 9090
 
