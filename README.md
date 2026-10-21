@@ -19,6 +19,12 @@ This project is designed to serve as a lightweight employee directory and report
 - filter employees by country/location
 - summarize department counts for a given location and salary threshold
 
+## Performance report
+
+The API performance benchmark for the main employee listing controller is documented here:
+
+- [API Performance Report](./PERFORMANCE_REPORT.md)
+
 ## BDD / Cucumber preview
 
 The repository includes BDD-style coverage for the core employee reporting flows.
