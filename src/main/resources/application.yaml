@@ -37,3 +37,13 @@ employees:
     high-salary-threshold: 1000000
   defaults:
     currency: USD
+
+langchain4j:
+  google-ai-gemini:
+    chat-model:
+      api-key: ${GEMINI_API_KEY}
+      model-name: ${MODEL_NAME:gemini-4-argon}
+      temperature: 0.1
+      max-output-tokens: 2048
+      log-requests: false
+      log-responses: false
