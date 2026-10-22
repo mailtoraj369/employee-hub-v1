@@ -1,6 +1,23 @@
 spring:
   jpa:
     show-sql: true
+  ssl:
+    bundle:
+      jks:
+        web-server:
+          key:
+            alias: employee-svc-ssl
+          keystore:
+            location: classpath:employee-svc-ssl.p12
+            password: ${CERT_PASSWORD}
+            type: PKCS12
+
+server:
+  port: ${httspport:8443}
+  servlet:
+    context-path: /
+  ssl:
+    bundle: web-server
 
 employees:
   pagination:
