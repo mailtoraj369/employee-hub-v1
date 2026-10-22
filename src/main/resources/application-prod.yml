@@ -3,6 +3,24 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: false
+  ssl:
+    bundle:
+      jks:
+        web-server:
+          key:
+            alias: employee-svc-ssl
+          keystore:
+            location: classpath:employee-svc-ssl.p12
+            use-ssl: false
+            password: ${CERT_PASSWORD}
+            type: PKCS12
+
+server:
+  port: ${httspport:8443}
+  servlet:
+    context-path: /
+  ssl:
+    bundle: web-server
 
 employees:
   pagination:
