@@ -118,14 +118,73 @@ If you override the server port, use the custom value instead, for example:
 http://localhost:8081
 ```
 
+
+## Run in production SSL mode with custom certificates
+
+For the `prod` profile, the UI loads its SSL key and trust stores from the classpath under `src/main/resources/certs/`. The required passwords must be supplied through environment variables:
+
+- `CERT_PASSWORD` for the UI keystore used by the embedded web server
+
+Example shell export:
+
+```bash
+export CERT_PASSWORD='change-me'
+```
+
+Create the certificate directory and place the generated files there before running the app:
+
+```bash
+mkdir -p src/main/resources/certs
+```
+
+### 1) Application Service SVC certificate
+
+Create the downstream service certificate and keystore:
+
+```bash
+keytool -genkeypair -alias employee-svc-ssl -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore employee-svc-ssl.p12 -validity 3650 -dname "CN=localhost" -ext "SAN=dns:localhost,dns:employee-hub-svc,dns:employee-hub-svc.namespace.svc.cluster.local,ip:127.0.0.1"
+```
+
+Move the generated file into the app resources folder:
+
+```bash
+mv employee-svc-ssl.p12 src/main/resources/certs/
+```
+
+
+Move it into the app resources folder:
+
+```bash
+mv employee-svc-ssl.p12 src/main/resources/certs/
+```
+
+The final cert files should exist under `src/main/resources/certs/`:
+
+- `employee-svc-ssl.p12`
+
+These names match the production configuration in `src/main/resources/application-prod.yaml`, which loads:
+
+- `classpath:certs/employee-svc-ssl.p12`
+
+### Run the production SSL app
+
+Build the jar and start the UI in SSL mode with the required env vars:
+
+```bash
+./mvnw clean package
+CERT_PASSWORD='change-me' java -jar target/employee-hub-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
+```
+
+The app will run on the configured HTTPS port (`8444` in the prod profile) and use the certificates placed under `src/main/resources/certs/`.
+
 ## Swagger / OpenAPI URLs
 
 Once the app is running, Swagger docs are available at:
 
-- Swagger UI: http://localhost:8080/swagger-ui.html
-- Swagger UI (newer path): http://localhost:8080/swagger-ui/index.html
-- OpenAPI JSON: http://localhost:8080/v3/api-docs
-- OpenAPI YAML: http://localhost:8080/v3/api-docs.yaml
+- Swagger UI: http://localhost:9090/swagger-ui.html
+- Swagger UI (newer path): http://localhost:9090/swagger-ui/index.html
+- OpenAPI JSON: http://localhost:9090/v3/api-docs
+- OpenAPI YAML: http://localhost:9090/v3/api-docs.yaml
 
 If Spring Security is active in your environment, the Swagger page may require the generated credentials shown in the application startup logs.
 
