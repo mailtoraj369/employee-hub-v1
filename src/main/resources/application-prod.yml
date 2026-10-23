@@ -10,8 +10,7 @@ spring:
           key:
             alias: employee-svc-ssl
           keystore:
-            location: classpath:employee-svc-ssl.p12
-            use-ssl: false
+            location: classpath:certs/employee-svc-ssl.p12
             password: ${CERT_PASSWORD}
             type: PKCS12
 

@@ -1,4 +1,6 @@
 spring:
+  ssl:
+    enabled: false
   datasource:
     url: jdbc:sqlite:./target/test-employees.db
     driver-class-name: org.sqlite.JDBC
